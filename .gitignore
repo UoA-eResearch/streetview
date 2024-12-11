@@ -1,6 +1,5 @@
 .env
 cache.sqlite
 __pycache__
-example_GPS_data.csv
+*.csv
 panoramas
-results.csv

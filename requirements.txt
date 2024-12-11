@@ -1,0 +1,8 @@
+geopandas
+requests
+requests-cache
+tqdm
+matplotlib
+streetlevel
+aiohttp
+python-dotenv
