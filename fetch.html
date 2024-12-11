@@ -7746,10 +7746,14 @@ a.anchor-link {
         <span class="n">panoid</span> <span class="o">=</span> <span class="n">pano</span><span class="p">[</span><span class="s2">"panoid"</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pano</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"year"</span><span class="p">):</span>
             <span class="c1"># If the year is not available, get it from the metadata</span>
-            <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"https://maps.googleapis.com/maps/api/streetview/metadata?pano=</span><span class="si">{</span><span class="n">panoid</span><span class="si">}</span><span class="s2">&amp;key=</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'API_KEY'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"date"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">panoid</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
-            <span class="n">pano</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">=</span> <span class="n">year</span>
-            <span class="n">pano</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]</span> <span class="o">=</span> <span class="n">month</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"https://maps.googleapis.com/maps/api/streetview/metadata?pano=</span><span class="si">{</span><span class="n">panoid</span><span class="si">}</span><span class="s2">&amp;key=</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'API_KEY'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">resp</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)</span>
+                <span class="n">pano</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span> <span class="o">=</span> <span class="n">year</span>
+                <span class="n">pano</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]</span> <span class="o">=</span> <span class="n">month</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"panoramas/</span><span class="si">{</span><span class="n">panoid</span><span class="si">}</span><span class="s2">.png"</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
@@ -7763,8 +7767,8 @@ a.anchor-link {
         <span class="n">row</span><span class="p">[</span><span class="s2">"panoid"</span><span class="p">]</span> <span class="o">=</span> <span class="n">panoid</span>
         <span class="n">row</span><span class="p">[</span><span class="s2">"panolat"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">]</span>
         <span class="n">row</span><span class="p">[</span><span class="s2">"panolon"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">]</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"panoyear"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"panomonth"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="p">[</span><span class="s2">"month"</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">"panoyear"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"year"</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">"panomonth"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"month"</span><span class="p">)</span>
         <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"Index"</span><span class="p">]</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"results.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -7781,7 +7785,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre>⌛ 18 min 16 s (2024-12-11T12:17:09)</pre>
+<pre>⌛ 10 min 38 s (2024-12-11T14:20:10)</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
@@ -7793,148 +7797,8 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-pUw8PmVPYZBTW26mq2DAfw 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-QEpZV7bnO2mBfp0weMUKEg 2012 04
-NQi8eh4MBHprJGCpl9t1EQ 2023 11
-0dU2CZ_GXhuhodJJbXVHSA 2017 02
-IUzaXGEkzyOV-oEgTQaHhA 2023 01
-uPRCtL-OvwI3f_lXNBZtdw 2023 01
-BoCOn1VpFGrbXlyX3EKZ6g 2022 08
-BoCOn1VpFGrbXlyX3EKZ6g 2022 08
-tbfXbYFHITDw8p7vCFU3KA 2022 08
-BoCOn1VpFGrbXlyX3EKZ6g 2022 08
-BoCOn1VpFGrbXlyX3EKZ6g 2022 08
-BoCOn1VpFGrbXlyX3EKZ6g 2022 08
-BoCOn1VpFGrbXlyX3EKZ6g 2022 08
-u8H0X8VyWl2lDVkS6Ya_-A 2022 08
-tbfXbYFHITDw8p7vCFU3KA 2022 08
-BoCOn1VpFGrbXlyX3EKZ6g 2022 08
-BoCOn1VpFGrbXlyX3EKZ6g 2022 08
-E636s1bSOcFecsxRZBhe-A 2022 06
-E636s1bSOcFecsxRZBhe-A 2022 06
-E636s1bSOcFecsxRZBhe-A 2022 06
-E636s1bSOcFecsxRZBhe-A 2022 06
-E636s1bSOcFecsxRZBhe-A 2022 06
-ZTIH3Mz6iJzVC19FNmSJVg 2022 08
-GL_vRmL4MkFoZnyQ8tgBaQ 2022 08
-0PlbkfrXqZH8ZT9dXdJ4nw 2022 10
-z4sOiA7M2xcH2OJrFe9OLQ 2022 08
-ygc70gIJkR5gBqyN53mocA 2022 06
-nbQli_fHlpCndOEQgXngeg 2023 04
-ygc70gIJkR5gBqyN53mocA 2022 06
-ygc70gIJkR5gBqyN53mocA 2022 06
-ygc70gIJkR5gBqyN53mocA 2022 06
-ygc70gIJkR5gBqyN53mocA 2022 06
-RckzzAklKaTxajVjtAThiA 2014 06
-1289otXolkLhHU83Kv3jNw 2023 02
-1289otXolkLhHU83Kv3jNw 2023 02
-1289otXolkLhHU83Kv3jNw 2023 02
-1289otXolkLhHU83Kv3jNw 2023 02
-1289otXolkLhHU83Kv3jNw 2023 02
-1289otXolkLhHU83Kv3jNw 2023 02
-qtQsWE_00th2vpn22aY9dA 2022 06
-0ZnjZp2tw3PO1Wm9kQwC-A 2023 03
-cnrtLEk04aPtgiUDufj28Q 2022 07
-JMqTKhhaSGiL13Fcba9DOQ 2022 08
-98F8ee3IDCJa7FsS9HGt4A 2022 06
-98F8ee3IDCJa7FsS9HGt4A 2022 06
-98F8ee3IDCJa7FsS9HGt4A 2022 06
-98F8ee3IDCJa7FsS9HGt4A 2022 06
-98F8ee3IDCJa7FsS9HGt4A 2022 06
-98F8ee3IDCJa7FsS9HGt4A 2022 06
-HpsRFBGI_DiS_zsIiiGBWQ 2023 03
-98F8ee3IDCJa7FsS9HGt4A 2022 06
-NHTd13ckYAZ_wyapmyM9Yg 2022 06
-O6Ul_0vDwdqDXZNvuL-xgA 2024 06
-sbBNw2PeRAEwQXQsZwKV7w 2022 08
-FpaEBhz386IvArSDGesGjA 2022 08
-P510qjK2oBsRLOAGF0KF0g 2022 08
-P510qjK2oBsRLOAGF0KF0g 2022 08
-cqZS-CrklfZ4C6zV0eERcA 2023 01
-sbBNw2PeRAEwQXQsZwKV7w 2022 08
-Hg9gLWxYJzDIx7rg-yv5pg 2022 08
-Hg9gLWxYJzDIx7rg-yv5pg 2022 08
-Hg9gLWxYJzDIx7rg-yv5pg 2022 08
-Hg9gLWxYJzDIx7rg-yv5pg 2022 08
-65d0avdBirncaJcplRA5KQ 2022 08
-65d0avdBirncaJcplRA5KQ 2022 08
-65d0avdBirncaJcplRA5KQ 2022 08
-Hg9gLWxYJzDIx7rg-yv5pg 2022 08
-Hg9gLWxYJzDIx7rg-yv5pg 2022 08
-Hg9gLWxYJzDIx7rg-yv5pg 2022 08
-Hg9gLWxYJzDIx7rg-yv5pg 2022 08
-65d0avdBirncaJcplRA5KQ 2022 08
-65d0avdBirncaJcplRA5KQ 2022 08
-eQJOhROQf7oOKAQ7Dd3W0w 2022 08
-0RWVz8x0BeFG5A7EVO5h5w 2022 06
-f0lidZP3hPM_OhXiyRzioQ 2023 03
-szMoio4QTlApCWnVnh5G4g 2022 08
-szMoio4QTlApCWnVnh5G4g 2022 08
-szMoio4QTlApCWnVnh5G4g 2022 08
-szMoio4QTlApCWnVnh5G4g 2022 08
-szMoio4QTlApCWnVnh5G4g 2022 08
-szMoio4QTlApCWnVnh5G4g 2022 08
-zA52PlIHatVUYAz-kEze9A 2022 06
-zA52PlIHatVUYAz-kEze9A 2022 06
-zA52PlIHatVUYAz-kEze9A 2022 06
-zA52PlIHatVUYAz-kEze9A 2022 06
-zA52PlIHatVUYAz-kEze9A 2022 06
-P0sI2lVkG-KQkQjIZ8_nRg 2022 06
-z4UQ2w159bkRcYkbrEpLfg 2019 10
-vSK5nPeIf_wb1BmTflzS-A 2023 01
-1MUwIgaiGUZ6P7QluOqBhQ 2022 08
-QdpacGV7JBX7rh3ivecKyA 2022 08
-1MUwIgaiGUZ6P7QluOqBhQ 2022 08
-1MUwIgaiGUZ6P7QluOqBhQ 2022 08
-1MUwIgaiGUZ6P7QluOqBhQ 2022 08
-1MUwIgaiGUZ6P7QluOqBhQ 2022 08
-1MUwIgaiGUZ6P7QluOqBhQ 2022 08
-QdpacGV7JBX7rh3ivecKyA 2022 08
-1MUwIgaiGUZ6P7QluOqBhQ 2022 08
-QdpacGV7JBX7rh3ivecKyA 2022 08
-QdpacGV7JBX7rh3ivecKyA 2022 08
-1MUwIgaiGUZ6P7QluOqBhQ 2022 08
-QdpacGV7JBX7rh3ivecKyA 2022 08
-zCC9vVleROiE-8QtcRlT5Q 2023 02
-zCC9vVleROiE-8QtcRlT5Q 2023 02
-zCC9vVleROiE-8QtcRlT5Q 2023 02
-zCC9vVleROiE-8QtcRlT5Q 2023 02
-_LPgL2hHHnKfY7hin-h-6g 2023 01
-Owpbmtc-XrlRLTsLF4s1oQ 2023 11
-5n_5GwN8XdGnod_H9BkEeA 2022 08
-5n_5GwN8XdGnod_H9BkEeA 2022 08
-tYTOv1BXn7J3VAqHfiEGzQ 2022 08
-u446sQfWXkYt80E4XA04Hw 2022 08
-DY_9xGuZJKt_nHHqh3lJtg 2022 08
-DY_9xGuZJKt_nHHqh3lJtg 2022 08
-DY_9xGuZJKt_nHHqh3lJtg 2022 08
-DY_9xGuZJKt_nHHqh3lJtg 2022 08
-DY_9xGuZJKt_nHHqh3lJtg 2022 08
-RhzfKfTkC86IXk2xNl4ovQ 2022 08
-ATh6esZH5ewEAVKASmmSMA 2022 06
-XlrNiyexzaqBrAsApLEvfQ 2022 06
-itNDN46vZ7KLhTPMZReiTg 2022 06
-j-OVIxuuT_5mLsAtj1Wp9w 2022 06
-itNDN46vZ7KLhTPMZReiTg 2022 06
-j-OVIxuuT_5mLsAtj1Wp9w 2022 06
-itNDN46vZ7KLhTPMZReiTg 2022 06
-itNDN46vZ7KLhTPMZReiTg 2022 06
-itNDN46vZ7KLhTPMZReiTg 2022 06
-uvF_kEjOrCBGLAEs8H0WhQ 2022 08
-6QTMfMc6GiPqXJBvncjcgw 2015 10
-EkoMjfmqpnfEBvbUxbOSKA 2015 10
-VKA6pOBD0w-v3rllUZIhWQ 2015 10
+<pre>'date'
+{'copyright': '© Google', 'location': {'lat': -36.92530810090037, 'lng': 174.784988799528}, 'pano_id': 'Xwet0yFANV1g6Sw35tsDkw', 'status': 'OK'}
 </pre>
 </div>
 </div>
