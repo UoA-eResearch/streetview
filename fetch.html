@@ -7777,47 +7777,16 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pano</span> <span class="o">=</span> <span class="n">streetview</span><span class="o">.</span><span class="n">find_panorama</span><span class="p">(</span><span class="o">-</span><span class="mf">36.8506138</span><span class="p">,</span> <span class="mf">174.7679825</span><span class="p">,</span> <span class="n">search_third_party</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">pano</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre>✔️ 7.96 ms (2024-12-12T10:01:28/2024-12-12T10:01:28)</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>AF1QipOJxqX-aPzKlbpBUGkipExlb2qHXPcx8sZOFbHG (-36.85061, 174.76798) [2016-02-19]</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)):</span>
     <span class="n">pano</span> <span class="o">=</span> <span class="n">streetview</span><span class="o">.</span><span class="n">find_panorama</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">search_third_party</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">third_party</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pano</span><span class="p">:</span>
         <span class="n">pano</span> <span class="o">=</span> <span class="n">streetview</span><span class="o">.</span><span class="n">find_panorama</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">search_third_party</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">third_party</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pano</span><span class="p">:</span>
         <span class="k">continue</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">"panoramas"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -7829,6 +7798,9 @@ a.anchor-link {
     <span class="n">row</span><span class="p">[</span><span class="s2">"panolat"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="o">.</span><span class="n">lat</span>
     <span class="n">row</span><span class="p">[</span><span class="s2">"panolon"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="o">.</span><span class="n">lon</span>
     <span class="n">row</span><span class="p">[</span><span class="s2">"panodate"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pano</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+    <span class="n">row</span><span class="p">[</span><span class="s2">"panothirdparty"</span><span class="p">]</span> <span class="o">=</span> <span class="n">third_party</span>
+    <span class="n">row</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="o">.</span><span class="n">source</span>
+    <span class="n">row</span><span class="p">[</span><span class="s2">"uploader"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pano</span><span class="o">.</span><span class="n">uploader</span>
     <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">"Index"</span><span class="p">]</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"results.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -7845,7 +7817,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre>⌛ 4 min 49 s (2024-12-12T10:01:28)</pre>
+<pre>✔️ 5.89 s (2024-12-12T10:45:29/2024-12-12T10:45:35)</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
